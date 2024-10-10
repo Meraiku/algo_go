@@ -1,6 +1,8 @@
 package sort
 
 import (
+	"math/rand"
+
 	"golang.org/x/exp/constraints"
 )
 
@@ -8,11 +10,15 @@ func QuickSort[T constraints.Ordered](arr []T) []T {
 	if len(arr) < 2 {
 		return arr
 	} else {
-		pivot := arr[0]
+		index := rand.Intn(len(arr) - 1)
+		pivot := arr[index]
 
 		var left, right []T
 
-		for _, num := range arr[1:] {
+		for i, num := range arr {
+			if i == index {
+				continue
+			}
 
 			if num <= pivot {
 				left = append(left, num)
