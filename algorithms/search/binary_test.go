@@ -33,3 +33,15 @@ func TestBinarySearchError(t *testing.T) {
 	require.Error(t, err)
 	require.True(t, index == -1)
 }
+
+func TestRecursiveBinarySearch(t *testing.T) {
+	n := 200
+
+	arr := array.Get()
+	arr[0] = n
+	slices.Sort(arr)
+
+	index := BinaryRecursive(arr, n, 0, len(arr)-1)
+
+	require.True(t, index >= 0)
+}

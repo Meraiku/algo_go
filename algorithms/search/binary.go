@@ -2,7 +2,6 @@ package search
 
 import (
 	"errors"
-	"fmt"
 
 	"golang.org/x/exp/constraints"
 )
@@ -17,7 +16,6 @@ func Binary[T constraints.Ordered](arr []T, val T) (int, error) {
 
 		switch {
 		case arr[mid] == val:
-			fmt.Printf("done in %d iterations\n", loop)
 			return mid, nil
 		case arr[mid] > val:
 			high = mid - 1
@@ -28,4 +26,19 @@ func Binary[T constraints.Ordered](arr []T, val T) (int, error) {
 	}
 
 	return -1, errors.New("value is not found")
+}
+
+func BinaryRecursive[T constraints.Ordered](arr []T, val T, low, high int) int {
+	mid := (low + high) / 2
+	if arr[mid] == val {
+		return mid
+	}
+	if low == high {
+		return -1
+	}
+	if arr[mid] < val {
+		return BinaryRecursive(arr, val, mid+1, high)
+	} else {
+		return BinaryRecursive(arr, val, low, mid-1)
+	}
 }
