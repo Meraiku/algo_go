@@ -11,7 +11,14 @@ type Stack[T any] struct {
 	mu    sync.RWMutex
 }
 
-func (s *Stack[T]) Append(item T) {
+func New[T any]() *Stack[T] {
+	return &Stack[T]{
+		items: []T{},
+		mu:    sync.RWMutex{},
+	}
+}
+
+func (s *Stack[T]) Push(item T) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	if s.items == nil {
@@ -38,7 +45,7 @@ func (s *Stack[T]) Pop() (T, error) {
 	return out, nil
 }
 
-func (s *Stack[T]) Top() (T, error) {
+func (s *Stack[T]) Peek() (T, error) {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 
@@ -51,4 +58,10 @@ func (s *Stack[T]) Top() (T, error) {
 	out = s.items[len(s.items)-1]
 
 	return out, nil
+}
+
+func (s *Stack[T]) Size() int {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+	return len(s.items)
 }
